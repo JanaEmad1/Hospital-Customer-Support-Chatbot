@@ -1,0 +1,22 @@
+# Install with:  pip install -r requirements.txt
+#
+# The spaCy language model is NOT a pip dependency and must be fetched
+# separately after installing the packages below:
+#
+#     python -m spacy download en_core_web_lg
+#
+# (en_core_web_lg is ~560 MB -- the notebook will not run without it.)
+
+# Pinned: the notebook was developed against this exact version and later
+# releases changed the Trainer / evaluation API.
+transformers==4.45.2
+
+datasets
+evaluate
+rouge_score
+torch
+spacy
+matplotlib
+numpy
+
+# sqlite3, os, re and collections are part of the Python standard library
