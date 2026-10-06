@@ -56,6 +56,60 @@ A few things worth knowing before you run it:
 
 ---
 
+## 📈 Results
+
+The fine-tuned **T5-small** generator was trained for 3 epochs on 2,000 of the 9,588 training pairs.
+
+<p align="center"><img src="docs/rouge_scores.png" width="560" alt="ROUGE-1 0.39, ROUGE-2 0.18, ROUGE-L 0.36"></p>
+
+| Metric | Score |
+|---|---|
+| ROUGE-1 | 0.395 |
+| ROUGE-2 | 0.179 |
+| ROUGE-L | 0.360 |
+
+**Read these with two caveats:**
+
+1. **They are scored on training examples.** In the notebook, `eval_dataset` is `train[:600]`, a slice of the same
+   2,000 rows the model trained on. The validation (1,198) and test (1,199) splits exist but were never scored. On unseen
+   messages the scores will be lower.
+2. **Replies were cut to 16 tokens.** Tokenisation used `max_length=16` for both the question and the reply, but the
+   reference replies average **113 words**. The model only ever learned how a reply *opens*, which is why demo
+   answers stop mid-sentence ("i'm here to help i understand your need to…").
+
+<p align="center"><img src="docs/length_budget.png" width="560" alt="Customer messages average 9 words, the training limit was 16 tokens, reference replies average 113 words"></p>
+
+The **database half works as intended**. spaCy's entity ruler pulls out the specialisation ("cardiology"), the
+query is built with parameters, and the right doctor, fee, room and day come back from SQLite.
+
+**Next steps, in order of payoff:** score the held-out test split; raise the reply length to ~256 tokens; train on all
+9,588 pairs; and switch reply generation to templates filled from the database, so facts are never generated.
+
+---
+
+## 💼 Business impact
+
+**Use case: a hospital front desk.** A large share of patient calls and messages are routine: which doctor covers a
+specialty, fees, room numbers, which day a clinic runs, booking changes. All of these have a correct answer in a database.
+
+An illustrative estimate, using assumptions you can swap for real figures:
+
+| Assumption | Value |
+|---|---|
+| Patient enquiries per day | 400 |
+| Share that are routine look-ups (doctor / fee / room / schedule) | 40% |
+| Staff time per enquiry | 2 minutes |
+
+**≈ 160 enquiries a day → ≈ 5.3 staff-hours a day (≈ 140 hours a month over 26 working days)** that could move to self-service, with
+answers available 24/7.
+
+**What has to be true before this ships:** the database answers are reliable already. The generated wording is not
+(see the caveats above). A production version should take facts *only* from SQL, use the language model just for
+phrasing, and hand anything clinical to a person. That design is built and evaluated in the follow-up project
+[whatsapp-clinic-assistant](https://github.com/JanaEmad1/whatsapp-clinic-assistant), which achieves 0 wrong answers.
+
+---
+
 ## 🔗 References
 
 - Hugging Face Datasets & Transformers  
