@@ -117,14 +117,9 @@ phrasing, and hand anything clinical to a person. That design is built and evalu
 
 ---
 
-> 💡 _Developed for the Natural Language Processing (IN321) Final Project – College of Artificial Intelligence (El Alamein), Feb 2025_
-
----
-
 ## 📄 License
 
 MIT — see [LICENSE](LICENSE).
 
-> This is a completed university project (NLP IN321, Feb 2025), published to
-> GitHub in June 2025. The short commit history reflects that it was uploaded
-> at completion rather than developed in the open.
+> Built in Feb 2025 and published in June 2025. The short commit history reflects
+> that it was uploaded when finished rather than developed in the open.
